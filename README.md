@@ -11,3 +11,4 @@
 | ResNet18                                     | 87.77%    | 58.65%    |
 | ResNet32                                     | 90.89%    | --        |
 | Instance Disc. Non-parametric Classifier     | 77.46%    | --        |
+| Instance Disc. Parametric Classifier         | 60.28%    | --        |

@@ -10,4 +10,4 @@
 | Vanilla CNN                                  | 60.90%    | 37.98%    |
 | ResNet18                                     | 87.77%    | 58.65%    |
 | ResNet32                                     | 90.89%    | --        |
-| Instance Disc. Non-parametric classifier     | 77.46%    | --        |
+| Instance Disc. Non-parametric Classifier     | 77.46%    | --        |

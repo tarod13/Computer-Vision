@@ -60,8 +60,12 @@ def weights_init_normal(m):
 def weights_init_he(m):
      if isinstance(m, nn.Conv2d) or isinstance(m, nn.ConvTranspose2d) or isinstance(m, nn.Linear):
         torch.nn.init.kaiming_normal_(m.weight, nonlinearity='relu')
-        torch.nn.init.constant_(m.bias, 0.0)       
+        torch.nn.init.constant_(m.bias, 0.0)  
 
+def weights_init_unitary(m):
+     if isinstance(m, nn.Linear):
+        torch.nn.init.normal_(m.weight, m.in_features**(-0.5), 0.02)
+        torch.nn.init.constant_(m.bias, 0.0)
 
 class ResLayer(nn.Module):
     def __init__(self, in_channels, out_channels, kernel=3):
@@ -133,7 +137,7 @@ class ResNet(nn.Module):
 
 
 class InstanceDiscNet(nn.Module):
-    def __init__(self, n_instances, labels, n_classes, parametric, temperature, n_features, knn
+    def __init__(self, n_instances, labels, n_classes, parametric, temperature, n_features, knn,
         n_stacks, n_layers_per_stack, n_filters_0):
         super().__init__()
 
@@ -159,8 +163,9 @@ class InstanceDiscNet(nn.Module):
         return x / norm
     
     def forward(self, image):
-        feature_vec_unnorm = self.CNN_backbone(image)
-        feature_vec = self.normalize(feature_vec_unnorm)
+        feature_vec = self.CNN_backbone(image)
+        if not self.parametric:
+            feature_vec = self.normalize(feature_vec)
         return feature_vec
     
     def non_parametric_logsoftmax(self, feature_vec):
@@ -200,6 +205,11 @@ class InstanceDiscNet(nn.Module):
             top5_classes = torch.topk(voting, 5)[1]
             top1_classes = torch.topk(voting, 1)[1]
             return top1_classes, top5_classes
+    
+    def init(self, method):
+        self.apply(method)
+        # if self.parametric:
+        #     self.recognition_layer.apply(weights_init_unitary)
 
 
 # Obtained from pytorch forum (cassidylaidlaw)
@@ -301,10 +311,10 @@ if __name__ == '__main__':
             pass
     else:
         if args.init == 'normal':
-            net.apply(weights_init_normal)
+            net.init(weights_init_normal)
         elif args.init == 'he':
-            net.apply(weights_init_he)
-    
+            net.init(weights_init_he)
+        
     loss_function = nn.CrossEntropyLoss()
     learning_rate = args.lr
     if args.optim == 'Adam':
@@ -320,7 +330,7 @@ if __name__ == '__main__':
         
     writer = SummaryWriter()
     
-    for epoch in range(0, N_EPOCHS):
+    for epoch in range(0, args.epochs):
         avg_loss = 0.0
         for n_batch, data in enumerate(trainloader, 0):
             inputs, labels, indices = data[0].to(device), data[1].to(device), data[2].to(device).long()

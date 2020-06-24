@@ -5,10 +5,11 @@
 * [Unsupervised Feature Learning via Non-Parametric Instance Discrimination](http://arxiv.org/abs/1805.01978) by Zhirong Wu, Yuanjun Xiong, Stella X. Yu, and Dahua Lin, 2018.
 
 ## Accuracies obtanied (Top-1)
-| Model                                        | CIFAR10   | CIFAR100  |
-| -------------------------------------------- | --------- | --------- |
-| Vanilla CNN                                  | 60.90%    | 37.98%    |
-| ResNet18                                     | 87.77%    | 58.65%    |
-| ResNet32                                     | 90.89%    | --        |
-| Instance Disc. Non-parametric Classifier     | 77.46%    | --        |
-| Instance Disc. Parametric Classifier         | 60.28%    | --        |
+| Model                                          | Type                | CIFAR10   | CIFAR100  |
+| ---------------------------------------------- | ------------------- | --------- | --------- |
+| Vanilla CNN                                    | Supervised          | 60.90%    | 37.98%    |
+| ResNet-18                                      | Supervised          | 87.77%    | 58.65%    |
+| ResNet-32                                      | Supervised          | 90.89%    | --        |
+| Instance Disc. Parametric Classifier           | Unsupervised + KNN  | 60.28%    | --        |
+| Instance Disc. Non-parametric Classifier       | Unsupervised + KNN  | 77.46%    | --        |
+| Instance Disc. Non-parametric Classifier (NCE) | Unsupervised + KNN  | 72.12%    | --        |

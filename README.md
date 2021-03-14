@@ -8,7 +8,7 @@
 | Model                                          | Type                | CIFAR10   | CIFAR100  |
 | ---------------------------------------------- | ------------------- | --------- | --------- |
 | Vanilla CNN                                    | Supervised          | 60.90%    | 37.98%    |
-| ResNet-18                                      | Supervised          | 87.77%    | 58.65%    |
+| ResNet-18                                      | Supervised          | 90.10%    | 58.65%    |
 | ResNet-32                                      | Supervised          | 90.89%    | --        |
 | Instance Disc. Parametric Classifier           | Unsupervised + KNN  | 60.28%    | --        |
 | Instance Disc. Non-parametric Classifier       | Unsupervised + KNN  | 77.46%    | --        |
